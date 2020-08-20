@@ -1,0 +1,25 @@
+{
+    "items":[
+        {
+            "titulo_es":"Papas Fritas",
+            "titulo_en":"Chips",
+            "titulo_pt":"Patatas Fritas"
+        },
+        {
+            "titulo_es":"Hamburguesa",
+            "titulo_en":"Hamburger",
+            "titulo_pt":"Hambugeiza"
+        },
+        {
+            "titulo_es":"Lomo",
+            "titulo_en":"Meat Beef",
+            "titulo_pt":"carne rostizada"
+        },        {
+            "titulo_es":"Papas Fritas",
+            "titulo_en":"Chips",
+            "titulo_pt":"Patatas Fritas"
+        }
+        ],
+        "Nombre":"Menu de mañana",
+        "id":"1"
+    }

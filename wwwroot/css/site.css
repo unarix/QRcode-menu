@@ -23,9 +23,13 @@ body {
     width: 100%;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+.btn-gold {
+    background-color: #996632;
+    color: #fff;
+}
+
+.navbar-dark {
+    background-color: #996632!important;
 }
 
 /* Hide/rearrange for smaller screens */

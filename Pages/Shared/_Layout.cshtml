@@ -4,13 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]  </title>
-
-    <environment include="Development">
-        <link href="lib/bootstrap4/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    </environment>
-    <environment exclude="Development">
-        <link href="lib/bootstrap4/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    </environment>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="/lib/bootstrap4/js/bootstrap.bundle.min.js"><\/script>')</script>
+    <script src="/lib/bootstrap4/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/form-validation.js"></script>
+    <script src="js/bootstrap-input-spinner.js"></script>
+    <link href="lib/bootstrap4/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="css/site.css" rel="stylesheet" crossorigin="anonymous">
     
     <style type="text/css">
 
@@ -33,7 +33,7 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <a class="navbar-brand" href="#">
-                Covid-19
+                Catering
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -41,10 +41,10 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" asp-page="/Index">Declarar</a>
+                        <a class="nav-link" asp-page="/Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-page="/About">Comprobar</a>
+                        <a class="nav-link" asp-page="/About">Mas informacion</a>
                     </li>
                 </ul>
             </div>
@@ -64,21 +64,10 @@
             @RenderBody()
             <hr />
             <footer>
+                A2Klab
             </footer>
         </div>
     </main>
-    <environment include="Development">
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="/lib/bootstrap4/js/bootstrap.bundle.min.js"><\/script>')</script>
-        <script src="/lib/bootstrap4/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="form-validation.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="/lib/bootstrap4/js/bootstrap.bundle.min.js"><\/script>')</script>
-        <script src="/lib/bootstrap4/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="form-validation.js"></script>
-    </environment>
 
     @RenderSection("Scripts", required: false)
 </body>

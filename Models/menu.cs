@@ -15,6 +15,7 @@ namespace QRcode_menu.Models
     {
         public List<menuItem> items { get; set; }
         public string Nombre { get; set; }
+        public string id { get; set; }
         
     }
 }

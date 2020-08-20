@@ -1,183 +1,62 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Declaracion Jurada";
+    ViewData["Title"] = "Menu Sala Vip";
 }
- 
-    @if (!@Model.qrsourcefile.Equals(""))
-    {
-        <div class="py-5 text-center">
-            <img class="d-block mx-auto mb-4" src="images/covid.png" alt="" width="100">
-            <h2>Declaracion jurada</h2>
+
+<div>
+    <img class="d-block mx-auto mb-4" src="https://www.aeropuertosvipclub.com.ar/imgs/logo-1x.png" alt="" width="150px">
+    <p class="text-muted lead text-left">Seleccione las cantidades en el menu siguiente y precione en enviar para finalizar el pedido</p>
+</div>
+
+<div class="order-md-2 mb-4">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Platos </span>
+        <span class="badge badge-secondary badge-pill"></span>
+      </h4>
+      <ul class="list-group mb-3">
+        @foreach (var item in Model.items)
+        {
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+                <h5 class="my-0">@Html.DisplayFor(modelItem => item.titulo_es)</h5>
+                <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_en) ・ </small>
+                <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_pt)</small>
+            </div>
+            
+            <spam style="width:120px;"><input type="number" value="0" min="0" max="20" step="1"/></spam>
+            </li>
+        }
+      </ul>
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Bebidas </span>
+        <span class="badge badge-secondary badge-pill"></span>
+      </h4>
+      <ul class="list-group mb-3">
+        @foreach (var item in Model.items)
+        {
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+                <h5 class="my-0">@Html.DisplayFor(modelItem => item.titulo_es)</h5>
+                <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_en) ・ </small>
+                <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_pt)</small>
+            </div>
+            <span class="text-muted">$12</span>
+            </li>
+        }
+      </ul>
+      <form class="card p-2">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Comentario">
         </div>
-        <p>Guarde el siguiente código QR; puede descargarlo o tomar una captura de pantalla. Deberá ser presentado en el departamento medico al momento de su revisión.</p>
-        <center><img src="@Model.qrsourcefile" alt="" title="" /></center>
-        <br>@Model.nombre
-        <br>@Model.dni
-        <br>@DateTime.Now.ToString()
-        <br>
-        <br>
-        <button class="btn btn-primary btn-lg btn-block" onclick="window.print();">Guardar</button>
-    }
+      </form>
+    </div>
 
-    @if (@Model.qrsourcefile.Equals(""))
-    {
-        <div class="py-5 text-center">
-            <img class="d-block mx-auto mb-4" src="images/covid.png" alt="" width="100">
-            <h2>Declaracion jurada</h2>
-            <p class="lead">
-                Complete el siguiente formulario
-                <button type="button" onclick="window.location='https://ezelab.azurewebsites.net/templates/default/?id=covid';" class="btn btn-danger">+Info</button>
-            </p>
-        </div>
 
-        <form method="post" id="myForm" class="needs-validation" novalidate>
+<div>
+    <button class="btn btn-gold btn-lg btn-block" onclick="window.print();">Enviar</button>
+</div>   
 
-            <h4>Datos del empleado</h4>
-
-            <div class="mb-3">
-                <label for="nombre">Ingrese su nombre y apellido </label>
-                <input type="text" id="nombre" class="form-control" asp-for="nombre" placeholder="" required>
-                <div class="invalid-feedback">
-                    Error
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="dni">Ingrese su DNI </label>
-                <input type="number" pattern="[0-9]{30}" pattern="\d*" id="dni" class="form-control" asp-for="dni" placeholder="Sin puntos" required>
-                <div class="invalid-feedback">
-                    Error
-                </div>
-            </div>
-
-            <hr class="mb-4">        
-
-            <h4>Sintomas</h4>
-            <p>Marcar SI/NO para cada uno de los siguientes síntomas observados en los últimos 10 días</p>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="fiebre" class="custom-control-input" id="fiebre">
-                <label class="custom-control-label" for="fiebre">Fiebre</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="tos" class="custom-control-input" id="tos">
-                <label class="custom-control-label" for="tos">Tos</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="garganta" class="custom-control-input" id="garganta">
-                <label class="custom-control-label" for="garganta">Dolor de garganta</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="olfato" class="custom-control-input" id="olfato">
-                <label class="custom-control-label" for="olfato">Perdida de olfato y Gusto</label>
-            </div>
-            
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="respirar" class="custom-control-input" id="respirar">
-                <label class="custom-control-label" for="respirar">Dificultar al respirar</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="diarrea" class="custom-control-input" id="diarrea">
-                <label class="custom-control-label" for="diarrea">Diarrea</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="vomito" class="custom-control-input" id="vomito">
-                <label class="custom-control-label" for="vomito">Vómito</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="erupciones" class="custom-control-input" id="erupciones">
-                <label class="custom-control-label" for="erupciones">Erupciones de piel</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="cabeza" class="custom-control-input" id="cabeza">
-                <label class="custom-control-label" for="cabeza">Dolor de cabeza</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="muscular" class="custom-control-input" id="muscular">
-                <label class="custom-control-label" for="muscular">Dolor muscular</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="sangrado" class="custom-control-input" id="sangrado">
-                <label class="custom-control-label" for="sangrado">Sangrado anormal</label>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="piel" class="custom-control-input" id="piel">
-                <label class="custom-control-label" for="piel">Piel u ojos amarillos</label>
-            </div>
-
-            <hr class="mb-4">
-            
-            <h4>Estuve en contacto cercano con personas que hayan manifestado los síntomas del COVID-19</h4>
-
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="contacto" class="custom-control-input" id="contacto">
-                <label class="custom-control-label" for="contacto">Marque en caso de SI</label>
-            </div>
-            <br>
-            <div class="mb-3">
-                <textarea rows="4" type="text" id="nombre" class="form-control" asp-for="contacto_desc" placeholder="En caso de SI, describa cuando y la relación con la persona y los síntomas manifestados ¿Le hicieron test de COVID-19 a esta persona? ¿Cuál fue el resultado?"></textarea>
-                <div class="invalid-feedback">
-                    Error
-                </div>
-            </div>
-            
-            <hr class="mb-4">
-
-            <h4>Me he realizado un test de COVID-19</h4>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" asp-for="test" class="custom-control-input" id="test">
-                <label class="custom-control-label" for="test">Marque en caso de SI</label>
-            </div>
-            <br>
-            <div class="mb-3">
-                <label for="fecha_test">Fecha del test </label>
-                <input type="date" id="fecha_test" class="form-control" asp-for="fecha_test">
-                <div class="invalid-feedback">
-                    Error
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <textarea rows="4" type="text" id="test_desc" class="form-control" asp-for="test_desc" placeholder="En caso de SI, describa el resultado: positivo / negativo / otros"></textarea>
-                <div class="invalid-feedback">
-                    Error
-                </div>
-            </div>
-
-            <hr class="mb-4">
-
-            <button type="button" onclick="go();" class="btn btn-primary btn-lg btn-block" >Enviar</button>
-
-        </form>
-
-        <script type = "text/javascript">
-            function go(){
-                
-                if( document.getElementById("nombre").value == "" ) {
-                    alert( "Ingrese su nombre" );
-                    document.getElementById("nombre").focus();
-                    return false;
-                }
-
-                if( document.getElementById("dni").value == "" ) {
-                    alert( "Ingrese su dni sin puntos ni guiones" );
-                    document.getElementById("dni").focus();
-                    return false;
-                }
-
-                document.getElementById("myForm").submit();
-            }
-        </script>
-
-    }}
+<script>
+    $("input[type='number']").inputSpinner()
+</script>
