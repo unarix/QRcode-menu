@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]  </title>
+
+    <environment include="Development">
+        <link href="lib/bootstrap4/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    </environment>
+    <environment exclude="Development">
+        <link href="lib/bootstrap4/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    </environment>
+    
+    <style type="text/css">
+
+        input:required:invalid, input:focus:invalid {
+            -moz-box-shadow: none;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="#">
+                Covid-19
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-page="/Index">Declarar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/About">Comprobar</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <br>
+            <br>
+        </div>
+        <div class="container marketing">
+            
+            <partial name="_CookieConsentPartial" />
+
+        
+            @RenderBody()
+            <hr />
+            <footer>
+            </footer>
+        </div>
+    </main>
+    <environment include="Development">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="/lib/bootstrap4/js/bootstrap.bundle.min.js"><\/script>')</script>
+        <script src="/lib/bootstrap4/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="form-validation.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="/lib/bootstrap4/js/bootstrap.bundle.min.js"><\/script>')</script>
+        <script src="/lib/bootstrap4/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="form-validation.js"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
