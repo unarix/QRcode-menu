@@ -12,8 +12,8 @@ namespace QRcode_menu.Pages
 {
     public class IndexModel : PageModel
     {
-        public List<menuItem> items = new List<menuItem>();
-
+        //public List<menuItem> items = new List<menuItem>();
+        public List<menuType> types = new List<menuType>();
         public void OnGet()
         {
             // Solo usar este método para el caso que se quiera crear un objeto json de tipo menu por primera vez
@@ -30,7 +30,7 @@ namespace QRcode_menu.Pages
 
                 // Cargo el json en la entidad
                 menuDta md = JsonConvert.DeserializeObject<menuDta>(System.IO.File.ReadAllText(Path + @"/menu_" + id + ".json"));
-                items = md.items;
+                types = md.types;
             }
         }
 
@@ -42,15 +42,30 @@ namespace QRcode_menu.Pages
         // Este método lo uso solo la primera vez para poder crear un objeto del tipo json que luego voy a desserializar
         private void crearJson()
         {
-            menuDta dta = new menuDta();
-            dta.Nombre = "Menu de mañana";
-            dta.id = "1";
-            dta.items = new List<menuItem>();
-            menuItem mnu = new menuItem();
-            mnu.titulo_es = "Papas Fritas";
-            mnu.titulo_en = "Chips";
-            mnu.titulo_pt = "Patatas Fritas";
-            dta.items.Add(mnu);
+            menuDta mnu = new menuDta();
+            mnu.Nombre = "Cena";
+            mnu.id = "1";
+            mnu.types = new List<menuType>();
+            
+            menuType type = new menuType();
+            type.titulo = "Platos";
+            type.hora_desde = "10:00";
+            type.hora_hasta = "18:00";
+            type.items = new List<menuItem>();
+            
+            menuItem item = new menuItem();
+            item.titulo_es = "Papas Fritas";
+            item.titulo_en = "Chips";
+            item.titulo_pt = "Patatas Fritas";
+            type.items.Add(item);
+            menuItem item2 = new menuItem();
+            item2.titulo_es = "Lomo";
+            item2.titulo_en = "Meat Beef";
+            item2.titulo_pt = "Rostizado";
+            
+            type.items.Add(item2);
+            mnu.types.Add(type);
+
 
             //Obtengo el directorio para el archivo
             var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;
@@ -59,10 +74,10 @@ namespace QRcode_menu.Pages
             string newPath = Path.Combine(webRootPath, folderName);
 
             //Serializo el objeto a json
-            string objeto = JsonConvert.SerializeObject(dta);
+            string objeto = JsonConvert.SerializeObject(mnu);
 
             //Escribo en disco el archivo
-            System.IO.File.WriteAllText(newPath + @"/menu_" + dta.id + ".json", objeto);
+            System.IO.File.WriteAllText(newPath + @"/menu_" + mnu.id + ".json", objeto);
         }
 
 

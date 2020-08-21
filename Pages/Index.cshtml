@@ -6,45 +6,37 @@
 
 <div>
     <img class="d-block mx-auto mb-4" src="https://www.aeropuertosvipclub.com.ar/imgs/logo-1x.png" alt="" width="150px">
-    <p class="text-muted lead text-left">Seleccione las cantidades en el menu siguiente y precione en enviar para finalizar el pedido</p>
+    <small class="text-muted lead text-left">Seleccione las cantidades en el menu siguiente y precione en enviar para finalizar el pedido</small>
 </div>
 
 <div class="order-md-2 mb-4">
-      <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="text-muted">Platos </span>
-        <span class="badge badge-secondary badge-pill"></span>
-      </h4>
-      <ul class="list-group mb-3">
-        @foreach (var item in Model.items)
+        @foreach (var type in Model.types)
         {
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-            <div>
-                <h5 class="my-0">@Html.DisplayFor(modelItem => item.titulo_es)</h5>
-                <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_en) ・ </small>
-                <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_pt)</small>
-            </div>
-            
-            <spam style="width:120px;"><input type="number" value="0" min="0" max="20" step="1"/></spam>
-            </li>
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">@Html.DisplayFor(modelItem => type.titulo)</span>
+                <!--span class="badge badge-secondary badge-pill">@Html.DisplayFor(modelItem => type.descripcion)</span-->
+            </h4>
+            <ul class="list-group mb-3">
+
+            @foreach (var item in type.items)
+            {
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div>
+                    <h5 class="my-0">@Html.DisplayFor(modelItem => item.titulo_es)</h5>
+                    <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_en) ・ </small>
+                    <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_pt)</small>
+                </div>
+                
+                <spam style="width:120px;"><input type="number" value="0" min="0" max="20" step="1"/></spam>
+                </li>
+            }
+
+            </ul>
         }
-      </ul>
-      <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="text-muted">Bebidas </span>
+      <h6 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Algo que quieras agregar? </span>
         <span class="badge badge-secondary badge-pill"></span>
-      </h4>
-      <ul class="list-group mb-3">
-        @foreach (var item in Model.items)
-        {
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-            <div>
-                <h5 class="my-0">@Html.DisplayFor(modelItem => item.titulo_es)</h5>
-                <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_en) ・ </small>
-                <small class="text-muted">@Html.DisplayFor(modelItem => item.titulo_pt)</small>
-            </div>
-            <span class="text-muted">$12</span>
-            </li>
-        }
-      </ul>
+      </h6>
       <form class="card p-2">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Comentario">

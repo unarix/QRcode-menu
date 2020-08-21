@@ -1,25 +1,42 @@
 {
-"items":[
-    {
-        "titulo_es":"Papas Fritas",
-        "titulo_en":"Chips",
-        "titulo_pt":"Patatas Fritas"
-    },
-    {
-        "titulo_es":"Hamburguesa",
-        "titulo_en":"Hamburger",
-        "titulo_pt":"Hambugeiza"
-    },
-    {
-        "titulo_es":"Lomo",
-        "titulo_en":"Meat Beef",
-        "titulo_pt":"carne rostizada"
-    },        {
-        "titulo_es":"Papas Fritas",
-        "titulo_en":"Chips",
-        "titulo_pt":"Patatas Fritas"
-    }
+    "types":[
+       {
+        "items":[
+            {
+            "titulo_es":"Papas Fritas",
+            "titulo_en":"Chips",
+            "titulo_pt":"Patatas Fritas"
+            },
+            {
+            "titulo_es":"Lomo",
+            "titulo_en":"Meat Beef",
+            "titulo_pt":"Rostizado"
+            }
+        ],
+        "titulo":"Platos",
+        "descripcion":"Cena",
+        "hora_desde":"10:00",
+        "hora_hasta":"18:00"
+       },
+       {
+        "items":[
+           {
+              "titulo_es":"Coca Cola",
+              "titulo_en":"Coke",
+              "titulo_pt":"Coca Cola"
+           },
+           {
+              "titulo_es":"Sprite",
+              "titulo_en":"Sprite",
+              "titulo_pt":"Suko da Lima Limao"
+           }
+        ],
+        "titulo":"Bebidas",
+        "descripcion":"Cena",
+        "hora_desde":"10:00",
+        "hora_hasta":"18:00"
+     }
     ],
-    "Nombre":"Menu de mañana",
+    "Nombre":"Cena",
     "id":"1"
-}
+ }
