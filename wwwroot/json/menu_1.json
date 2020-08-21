@@ -8,6 +8,11 @@
             "titulo_pt":"Patatas Fritas"
             },
             {
+            "titulo_es":"Hamburguesa",
+            "titulo_en":"Hamburguer",
+            "titulo_pt":"Hamburgueiza"
+            },
+            {
             "titulo_es":"Lomo",
             "titulo_en":"Meat Beef",
             "titulo_pt":"Rostizado"
@@ -35,6 +40,24 @@
         "descripcion":"Cena",
         "hora_desde":"10:00",
         "hora_hasta":"18:00"
+     },
+     {
+      "items":[
+          {
+          "titulo_es":"Helado",
+          "titulo_en":"Ice cream",
+          "titulo_pt":"Gellato"
+          },
+          {
+          "titulo_es":"Frutas",
+          "titulo_en":"Fruits",
+          "titulo_pt":"Fruta"
+          }
+      ],
+      "titulo":"Postres",
+      "descripcion":"Cena",
+      "hora_desde":"10:00",
+      "hora_hasta":"18:00"
      }
     ],
     "Nombre":"Cena",

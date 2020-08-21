@@ -13,7 +13,9 @@ namespace QRcode_menu.Pages
     public class IndexModel : PageModel
     {
         //public List<menuItem> items = new List<menuItem>();
+        
         public List<menuType> types = new List<menuType>();
+
         public void OnGet()
         {
             // Solo usar este método para el caso que se quiera crear un objeto json de tipo menu por primera vez
@@ -36,7 +38,7 @@ namespace QRcode_menu.Pages
 
         public void OnPost()
         {
-            
+            ViewData["types"] = types;
         }
 
         // Este método lo uso solo la primera vez para poder crear un objeto del tipo json que luego voy a desserializar
