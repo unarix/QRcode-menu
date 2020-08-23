@@ -15,6 +15,7 @@ namespace QRcode_menu.Pages
         //public List<menuItem> items = new List<menuItem>();
         
         public List<menuType> types = new List<menuType>();
+        public string pedidos { get; set; }
 
         public void OnGet()
         {
@@ -38,8 +39,28 @@ namespace QRcode_menu.Pages
 
         public void OnPost()
         {
-            ViewData["types"] = types;
+            string id = "1" ; // Request.Query["id"];
+
+            string message = Request.Form[nameof(pedidos)];;
+            string[] messageArray = message.Split("-");
+            string cuerpo = "Se solicita desde la mesa " + id + " el siguiente pedido: ";
+
+            foreach(string m in messageArray)
+            {
+                cuerpo += m + "/n";
+            }
+            
+            cuerpo += "Por favor marcar este email como leído cuando se entregue el pedido";
+
+
         }
+
+        // [HttpGet]
+        // public ActionResult enviarPedido(string pedido)
+        // {
+        //     return Json(_authorRepository.List());
+        //     //return JsonConvert. ("respuesta", JsonRequestBehavior.AllowGet);
+        // }
 
         // Este método lo uso solo la primera vez para poder crear un objeto del tipo json que luego voy a desserializar
         private void crearJson()
