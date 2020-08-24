@@ -6,61 +6,120 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System.IO;
+using Microsoft.Extensions.Caching.Memory;
 using QRcode_menu.Models;
 
 namespace QRcode_menu.Pages
 {
     public class IndexModel : PageModel
     {
-        //public List<menuItem> items = new List<menuItem>();
-        
+        private IMemoryCache memoryCache;
         public List<menuType> types = new List<menuType>();
         public string pedidos { get; set; }
 
+        public IndexModel(IMemoryCache memoryCache)    
+        {    
+            this.memoryCache = memoryCache;
+        }  
+
         public void OnGet()
         {
-            // Solo usar este método para el caso que se quiera crear un objeto json de tipo menu por primera vez
-            //crearJson();
+            pedidos = "";
+            string id = Request.Query["id"];
+            string sector = "1"; // Request.Query["sec"];
+            string pedidoExistente;
 
-            string id = "1" ; // Request.Query["id"];
             if(id != null)
             {
-                //Obtengo el directorio para el archivo json
-                var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-                string folderName = "json/";
-                string webRootPath = service.WebRootPath;
-                string Path = System.IO.Path.Combine(webRootPath, folderName);
+                bool isExist = memoryCache.TryGetValue("mesa_" + id, out pedidoExistente);
 
-                // Cargo el json en la entidad
-                menuDta md = JsonConvert.DeserializeObject<menuDta>(System.IO.File.ReadAllText(Path + @"/menu_" + id + ".json"));
-                types = md.types;
+                if(!isExist || pedidoExistente.Equals(""))
+                {
+                    //Obtengo el directorio para el archivo json
+                    var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+                    string folderName = "json/";
+                    string webRootPath = service.WebRootPath;
+                    string Path = System.IO.Path.Combine(webRootPath, folderName);
+
+                    // Cargo el json en la entidad
+                    menuDta md = JsonConvert.DeserializeObject<menuDta>(System.IO.File.ReadAllText(Path + @"/menu_" + sector + ".json"));
+                    types = md.types;
+                }
+                else
+                {
+                    string pedido = @"<div class='alert alert-success' role='alert'> 
+                    <h4>Ups!!!</h4>
+                    <p class='text-success'>Ya existe un pedido para tu mesa de hace menos de 5 minutos (Nro: " + id + ") </p>";
+
+                    pedido += "<b>";
+                    
+                    pedido += pedidoExistente;
+                    
+                    pedido += @"</b> 
+                    <h6>Si necesitas hacer alguna modificacion solicítelo al personal de la sala</h6></span>
+                    </div>";
+
+                    pedidos = pedido;
+                }
+            }
+            else
+            {
+
+                string mensaje = @"<div class='alert alert-danger' role='alert'> 
+                <h4>Ups!!! numero de mesa invalido. </h4>
+                </div>";
+                pedidos = mensaje;
             }
         }
 
         public void OnPost()
         {
-            string id = "1" ; // Request.Query["id"];
+            string id = Request.Query["id"];
+            string pedido = "";
+            try{
+                string message = Request.Form[nameof(pedidos)];;
+                string[] messageArray = message.Split("-");
+                pedido = @"<div class='alert alert-success' role='alert'> 
+                    <h4>Todo salio muy bien!</h4>
+                    <p class='text-success'>Ya estamos preparando el pedido para tu mesa (Nro: " + id + ") </p>";
 
-            string message = Request.Form[nameof(pedidos)];;
-            string[] messageArray = message.Split("-");
-            string cuerpo = "Se solicita desde la mesa " + id + " el siguiente pedido: ";
+                pedido += "<b>";
+                foreach(string m in messageArray){
+                    pedido += m + "<br>";
+                }
+                pedido += @"</b> 
+                    <h6>Si necesitas hacer alguna modificacion solicítelo al personal de la sala</h6></span>
+                    </div>";
 
-            foreach(string m in messageArray)
-            {
-                cuerpo += m + "/n";
+                //Aqui se debe llamar a la funcion que enviá el email; en caso de fallo debemos avisar que no se pudo realizar.
+                if (!enviarEmail(messageArray, id)){
+                    pedido = 
+                        @"<div class='alert alert-success' role='alert'> 
+                            <h2>Uy! algo paso cuando enviábamos tu pedido, por favor contacta al personal de la sala.</h2>
+                        </div>";
+                }               
             }
-            
-            cuerpo += "Por favor marcar este email como leído cuando se entregue el pedido";
+            catch(Exception ex){
+                pedido = ex.Message;
+            }
 
-
+            //Informamos el resultado del pedido
+            pedidos = pedido;
         }
 
-        // [HttpGet]
-        // public ActionResult enviarPedido(string pedido)
-        // {
-        //     return Json(_authorRepository.List());
-        //     //return JsonConvert. ("respuesta", JsonRequestBehavior.AllowGet);
-        // }
+        private bool enviarEmail(string[] pedidos, string id)
+        {
+            string pedido = "";
+
+            foreach(string m in pedidos){
+                pedido += m + "<br>";
+            }
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(300));
+            memoryCache.Set("mesa_" + id, pedido, cacheEntryOptions);
+
+            return true;
+        }
 
         // Este método lo uso solo la primera vez para poder crear un objeto del tipo json que luego voy a desserializar
         private void crearJson()
