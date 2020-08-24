@@ -64,7 +64,6 @@ namespace QRcode_menu.Pages
             }
             else
             {
-
                 string mensaje = @"<div class='alert alert-danger' role='alert'> 
                 <h4>Ups!!! numero de mesa invalido. </h4>
                 </div>";
@@ -94,13 +93,13 @@ namespace QRcode_menu.Pages
                 //Aqui se debe llamar a la funcion que enviá el email; en caso de fallo debemos avisar que no se pudo realizar.
                 if (!enviarEmail(messageArray, id)){
                     pedido = 
-                        @"<div class='alert alert-success' role='alert'> 
+                        @"<div class='alert alert-danger' role='alert'> 
                             <h2>Uy! algo paso cuando enviábamos tu pedido, por favor contacta al personal de la sala.</h2>
                         </div>";
                 }               
             }
             catch(Exception ex){
-                pedido = ex.Message;
+                pedido = @"<div class='alert alert-danger' role='alert'> Error: " + ex.Message + "</div>";
             }
 
             //Informamos el resultado del pedido
