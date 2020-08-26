@@ -15,7 +15,9 @@ namespace QRcode_menu.Models
     public class menuType
     {
         public List<menuItem> items { get; set; }
-        public string titulo { get; set; }
+        public string titulo_es { get; set; }
+        public string titulo_en { get; set; }
+        public string titulo_pt { get; set; }
         public string descripcion { get; set; }
         public string hora_desde { get; set; }
         public string hora_hasta { get; set; }

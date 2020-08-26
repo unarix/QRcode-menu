@@ -50,11 +50,8 @@ namespace QRcode_menu.Pages
                     string pedido = @"<div class='alert alert-success' role='alert'> 
                     <h4>Ups!!!</h4>
                     <p class='text-success'>Ya existe un pedido para tu mesa de hace menos de 5 minutos (Nro: " + id + ") </p>";
-
                     pedido += "<b>";
-                    
                     pedido += pedidoExistente;
-                    
                     pedido += @"</b> 
                     <h6>Si necesitas hacer alguna modificacion solicítelo al personal de la sala</h6></span>
                     </div>";
@@ -64,9 +61,20 @@ namespace QRcode_menu.Pages
             }
             else
             {
-                string mensaje = @"<div class='alert alert-danger' role='alert'> 
-                <h4>Ups!!! numero de mesa invalido. </h4>
-                </div>";
+                string mensaje = 
+                @"<div class='alert alert-danger' role='alert'> 
+                    <h4>Ups!!! </h4>
+                </div>
+                <ul>
+                    <li>Escanee el código QR que se encuentra en su mesa</li>
+                    <li>Seleccione del menu lo que quiera ordenar</li>
+                    <li>Presione en enviar para ingresar su pedido</li>
+                    <li>Una vez finalizado, confirme con el personal de la sala que todo esta ok</li>
+                </ul>
+                <p>
+                    Sera entregado en su mesa dentro de los 40 minutos desde la confirmacion de la orden.
+                </p>
+                ";
                 pedidos = mensaje;
             }
         }
@@ -77,7 +85,7 @@ namespace QRcode_menu.Pages
             string pedido = "";
             try{
                 string message = Request.Form[nameof(pedidos)];;
-                string[] messageArray = message.Split("-");
+                string[] messageArray = message.Split("#");
                 pedido = @"<div class='alert alert-success' role='alert'> 
                     <h4>Todo salio muy bien!</h4>
                     <p class='text-success'>Ya estamos preparando el pedido para tu mesa (Nro: " + id + ") </p>";
@@ -128,7 +136,7 @@ namespace QRcode_menu.Pages
 
                 foreach(string m in pedidos){
                     if(!m.Trim().Equals(""))
-                        pedido += m.Trim() + ", ";
+                        pedido += m.Trim() + "<br>";
                 }
                 
                 order.orden = pedido;
@@ -159,7 +167,7 @@ namespace QRcode_menu.Pages
             mnu.types = new List<menuType>();
             
             menuType type = new menuType();
-            type.titulo = "Platos";
+            type.titulo_es = "Platos";
             type.hora_desde = "10:00";
             type.hora_hasta = "18:00";
             type.items = new List<menuItem>();
@@ -176,7 +184,6 @@ namespace QRcode_menu.Pages
             
             type.items.Add(item2);
             mnu.types.Add(type);
-
 
             //Obtengo el directorio para el archivo
             var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;

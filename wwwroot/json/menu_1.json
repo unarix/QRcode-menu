@@ -18,7 +18,9 @@
             "titulo_pt":"Rostizado"
             }
         ],
-        "titulo":"Platos",
+        "titulo_es":"Platos",
+        "titulo_en":"Main dish",
+        "titulo_pt":"Prato principal",
         "descripcion":"Cena",
         "hora_desde":"10:00",
         "hora_hasta":"18:00"
@@ -36,7 +38,9 @@
               "titulo_pt":"Suko da Lima Limao"
            }
         ],
-        "titulo":"Bebidas",
+        "titulo_es":"Bebidas",
+        "titulo_en":"Drinks",
+        "titulo_pt":"Bebida",
         "descripcion":"Cena",
         "hora_desde":"10:00",
         "hora_hasta":"18:00"
@@ -54,7 +58,9 @@
           "titulo_pt":"Fruta"
           }
       ],
-      "titulo":"Postres",
+      "titulo_es":"Postres",
+      "titulo_en":"Desserts",
+      "titulo_pt":"Sobremesas",
       "descripcion":"Cena",
       "hora_desde":"10:00",
       "hora_hasta":"18:00"

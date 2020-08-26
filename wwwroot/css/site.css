@@ -28,6 +28,10 @@ body {
     color: #fff;
 }
 
+.text-gold {
+    color: #996632!important;
+}
+
 .navbar-dark {
     background-color: #996632!important;
 }
