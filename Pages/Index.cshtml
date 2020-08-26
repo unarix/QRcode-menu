@@ -80,6 +80,7 @@
     function armarOrden()
     {
         var pd = "";
+        var order_provided = "";
         
         $('[id^=selected_]').each(function() {
             var name = $(this).attr('name');
@@ -88,13 +89,17 @@
             if (value>0)
             {   
                 pd = pd + name + ": " + value + " # ";
+                order_provided = true;
             }
         });
 
         $('#pedidos').val(pd); 
         console.log($('#pedidos').val());
 
-        document.getElementById("myForm").submit();
+        if(order_provided)
+            document.getElementById("myForm").submit();
+        else
+            alert("Seleccione cantidades / Select quantities");
         
     }
 </script>
