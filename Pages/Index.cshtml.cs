@@ -91,7 +91,7 @@ namespace QRcode_menu.Pages
                     </div>";
 
                 //Aqui se debe llamar a la funcion que enviá el email; en caso de fallo debemos avisar que no se pudo realizar.
-                if (!enviarEmail(messageArray, id)){
+                if (!guardarPedido(messageArray, id)){
                     pedido = 
                         @"<div class='alert alert-danger' role='alert'> 
                             <h2>Uy! algo paso cuando enviábamos tu pedido, por favor contacta al personal de la sala.</h2>
@@ -106,22 +106,52 @@ namespace QRcode_menu.Pages
             pedidos = pedido;
         }
 
-        private bool enviarEmail(string[] pedidos, string id)
+        private bool guardarPedido(string[] pedidos, string id)
         {
-            string pedido = "";
+            try{        
+                string pedido = "";
+                orderDta orders = new orderDta(); 
 
-            foreach(string m in pedidos){
-                pedido += m + "<br>";
+                // Abro el objeto json e inserto el nuevo pedido
+                var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+                string folderName = "json/";
+                string webRootPath = service.WebRootPath;
+                string Path = System.IO.Path.Combine(webRootPath, folderName);
+
+                // Cargo el json en la entidad
+                orderDta od = JsonConvert.DeserializeObject<orderDta>(System.IO.File.ReadAllText(Path + @"/orders.json"));
+                orders = od;
+                orders order = new orders();
+                order.mesa = id;
+                order.fecha_hora = DateTime.Now.ToString();
+                order.entregado = false;
+
+                foreach(string m in pedidos){
+                    if(!m.Trim().Equals(""))
+                        pedido += m.Trim() + ", ";
+                }
+                
+                order.orden = pedido;
+                od.order.Add(order);
+
+                // vuelvo a guardar el objeto en el documento json.
+                string objeto = JsonConvert.SerializeObject(od);
+                System.IO.File.WriteAllText(Path + @"/orders.json", objeto);
+
+                // Uso el inmemory para guardar el pedido de esa mesa y que no vuelvan a hacerlo hasta 3000 seg despues.
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(300));
+                memoryCache.Set("mesa_" + id, pedido, cacheEntryOptions);
+
+                return true;
             }
-
-            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(300));
-            memoryCache.Set("mesa_" + id, pedido, cacheEntryOptions);
-
-            return true;
+            catch(Exception ex)
+            {
+                return false;
+            }
         }
 
         // Este método lo uso solo la primera vez para poder crear un objeto del tipo json que luego voy a desserializar
-        private void crearJson()
+        private void crearJsonMenu()
         {
             menuDta mnu = new menuDta();
             mnu.Nombre = "Cena";
@@ -161,6 +191,29 @@ namespace QRcode_menu.Pages
             System.IO.File.WriteAllText(newPath + @"/menu_" + mnu.id + ".json", objeto);
         }
 
+        private void crearJsonOrder()
+        {
+            orderDta mnu = new orderDta();
+            mnu.order = new List<orders>();
+            orders order = new orders();
+            order.mesa = "1";
+            order.orden = "ejemplo";
+            order.fecha_hora = DateTime.Now.ToString();
+            mnu.order.Add(order);
+
+
+            //Obtengo el directorio para el archivo
+            var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+            string folderName = "json/";
+            string webRootPath = service.WebRootPath;
+            string newPath = Path.Combine(webRootPath, folderName);
+
+            //Serializo el objeto a json
+            string objeto = JsonConvert.SerializeObject(mnu);
+
+            //Escribo en disco el archivo
+            System.IO.File.WriteAllText(newPath + @"/orders.json", objeto);
+        }
 
     }
 }

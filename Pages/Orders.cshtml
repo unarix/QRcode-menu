@@ -1,0 +1,41 @@
+﻿@page
+@model OrdersModel
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<form method="post" id="myForm" class="needs-validation" novalidate>
+
+<div class="order-md-2 mb-4">
+        @{
+
+            @if (@Model.ordersD.order.Count > 0)
+            {
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Listado de pedidos</span>
+                </h4>
+
+                <ul class="list-group mb-3">
+                @foreach (var o in @Model.ordersD.order)
+                {
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h5 class="my-0">@Html.DisplayFor(modelItem => o.fecha_hora)</h5>
+                            <h6 class="my-1 text-info">Mesa numero @Html.DisplayFor(modelItem => o.mesa)</h6>
+                            <h6 class="my-2 text-muted">@Html.DisplayFor(modelItem => o.orden) ・ </h6>
+                        </div>
+                    </li>
+                }
+                </ul>
+            }
+        }
+
+</div>
+</form>
+
+<script>
+    function eliminar()
+    {
+
+    }
+</script>
