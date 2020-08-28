@@ -33,7 +33,7 @@ namespace QRcode_menu.Pages
             {
                 bool reciente = memoryCache.TryGetValue("mesa_" + id, out pedido_reciente);
 
-                if(!existePedido(id) && !reciente)
+                if(!existePedido(id))
                 {
                     //Obtengo el directorio para el archivo json
                     var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;
