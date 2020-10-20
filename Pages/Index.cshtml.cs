@@ -27,15 +27,16 @@ namespace QRcode_menu.Pages
             pedidos = "";
             string id = Request.Query["id"];
             string menu = Request.Query["m"];
+            string side = Request.Query["s"];
             string pedido_reciente = "";
 
             try
             {
-                if(id != null && menu != null)
+                if(id != null && menu != null && side != null)
                 {
                     bool reciente = memoryCache.TryGetValue("mesa_" + id, out pedido_reciente);
 
-                    if(!existePedido(id))
+                    if(!existePedido(id,side))
                     {
                         //Obtengo el directorio para el archivo json
                         var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;
@@ -95,13 +96,14 @@ namespace QRcode_menu.Pages
         public void OnPost()
         {
             string id = Request.Query["id"];
+            string side = Request.Query["s"];
             string pedido = "";
             try{
                 string message = Request.Form[nameof(pedidos)];;
                 string[] messageArray = message.Split("#");
                 
                 //Aqui se debe llamar a la funcion que enviá el email; en caso de fallo debemos avisar que no se pudo realizar.
-                if (guardarPedido(messageArray, id)){
+                if (guardarPedido(messageArray, id, side)){
 
                     pedido = @"<div class='alert alert-success' role='alert'> 
                     <h4>Todo salio muy bien!</h4>
@@ -131,7 +133,7 @@ namespace QRcode_menu.Pages
             pedidos = pedido;
         }
 
-        private bool existePedido(string id)
+        private bool existePedido(string id, string side)
         {
             orderDta orders = new orderDta(); 
 
@@ -144,12 +146,12 @@ namespace QRcode_menu.Pages
             // Cargo el json en la entidad
             orderDta od = JsonConvert.DeserializeObject<orderDta>(System.IO.File.ReadAllText(Path + @"/orders.json"));
 
-            var o = od.order.Where(x => x.mesa == id);
+            var o = od.order.Where(x => (x.mesa == id && x.side == side));
 
             return (o.Count() > 0);
         }
 
-        private bool guardarPedido(string[] pedidos, string id)
+        private bool guardarPedido(string[] pedidos, string id, string side)
         {
             try{
                 string pedido = "";
@@ -169,6 +171,7 @@ namespace QRcode_menu.Pages
                 order.mesa = id;
                 order.fecha_hora = DateTime.Now.ToString();
                 order.entregado = false;
+                order.side = side;
 
                 foreach(string m in pedidos){
                     if(!m.Trim().Equals(""))
@@ -184,7 +187,7 @@ namespace QRcode_menu.Pages
 
                 // Uso el inmemory para guardar el pedido de esa mesa y que no vuelvan a hacerlo hasta 3000 seg despues.
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(300));
-                memoryCache.Set("mesa_" + id, pedido, cacheEntryOptions);
+                memoryCache.Set("mesa_" + id + side, pedido, cacheEntryOptions);
                 
                 return true;
             }

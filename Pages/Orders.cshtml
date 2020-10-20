@@ -18,11 +18,12 @@
                 <li class="bg-light border rounded list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h3 class="my-0 text-dark">Mesa @Html.DisplayFor(modelItem => o.mesa)</h3>
+                        <h5 class="my-0 text-dark">Lado @Html.DisplayFor(modelItem => o.side)</h5>
                         <h6 class="my-2 text-muted">@Html.Raw(o.orden)</h6>
                         <h5><span class="my-1 badge badge-secondary">@Html.DisplayFor(modelItem => o.fecha_hora)</span></h5>
                     </div>
                     <div>
-                        <button type="button" onclick="eliminar(@Html.Raw(o.mesa));" class="btn btn-success">Entregado</button>
+                        <button type="button" onclick="eliminar(@Html.Raw(o.mesa),'@Html.Raw(o.side)');" class="btn btn-success">Entregado</button>
                     </div>
                 </li>
                 <br>
@@ -31,15 +32,17 @@
     }
 </div>
 <input type="text" style="visibility: hidden;" id="idMesa" class="form-control" asp-for="idMesa" placeholder="">
+<input type="text" style="visibility: hidden;" id="idSide" class="form-control" asp-for="idSide" placeholder="">
 </form>
 
 <script>
-    function eliminar(id)
+    function eliminar(id, side)
     {
         var r = confirm("Seguro quiere confirmar la entrega de la orden para la mesa Nro. " + id + "?" );
         
         if (r == true) {
-            $('#idMesa').val(id); 
+            $('#idMesa').val(id);
+            $('#idSide').val(side);
             document.getElementById("myForm").submit();
         } 
     }

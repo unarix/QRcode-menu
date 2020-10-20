@@ -10,6 +10,7 @@ namespace QRcode_menu.Models
         public string orden { get; set; }
         public string mesa { get; set; }     
         public bool entregado { get; set; }
+        public string side { get; set; }
     }
 
     public class orderDta
