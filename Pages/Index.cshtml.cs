@@ -26,56 +26,69 @@ namespace QRcode_menu.Pages
         {
             pedidos = "";
             string id = Request.Query["id"];
-            string sector = "1"; // Request.Query["sec"];
+            string menu = Request.Query["m"];
             string pedido_reciente = "";
 
-            if(id != null)
+            try
             {
-                bool reciente = memoryCache.TryGetValue("mesa_" + id, out pedido_reciente);
-
-                if(!existePedido(id))
+                if(id != null && menu != null)
                 {
-                    //Obtengo el directorio para el archivo json
-                    var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-                    string folderName = "json/";
-                    string webRootPath = service.WebRootPath;
-                    string Path = System.IO.Path.Combine(webRootPath, folderName);
+                    bool reciente = memoryCache.TryGetValue("mesa_" + id, out pedido_reciente);
 
-                    // Cargo el json en la entidad
-                    menuDta md = JsonConvert.DeserializeObject<menuDta>(System.IO.File.ReadAllText(Path + @"/menu_" + sector + ".json"));
-                    types = md.types;
+                    if(!existePedido(id))
+                    {
+                        //Obtengo el directorio para el archivo json
+                        var service = HttpContext.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+                        string folderName = "json/";
+                        string webRootPath = service.WebRootPath;
+                        string Path = System.IO.Path.Combine(webRootPath, folderName);
+
+                        // Cargo el json en la entidad
+                        menuDta md = JsonConvert.DeserializeObject<menuDta>(System.IO.File.ReadAllText(Path + @"/menu_" + menu + ".json"));
+                        types = md.types;
+                    }
+                    else
+                    {
+                        string pedido = @"<div class='alert alert-success' role='alert'> 
+                        <h4>Ups!!!</h4>
+                        <p class='text-success'>Queres hacer algún cambio en tu pedido? informa al asistente de la sala (estas en la mesa Nro: " + id + ") </p>";
+                        pedido += "<b>";
+                        pedido += pedido_reciente;
+                        pedido += @"</b> 
+                        <h6>Ya estamos preparando todo para que pronto este en tu mesa</h6></span>
+                        </div>";
+
+                        pedidos = pedido;
+                    }
                 }
                 else
                 {
-                    string pedido = @"<div class='alert alert-success' role='alert'> 
-                    <h4>Ups!!!</h4>
-                    <p class='text-success'>Queres hacer algún cambio en tu pedido? informa al asistente de la sala (estas en la mesa Nro: " + id + ") </p>";
-                    pedido += "<b>";
-                    pedido += pedido_reciente;
-                    pedido += @"</b> 
-                    <h6>Ya estamos preparando todo para que pronto este en tu mesa</h6></span>
-                    </div>";
-
-                    pedidos = pedido;
+                    string mensaje = 
+                    @"<div class='alert alert-danger' role='alert'> 
+                        <h4>Ups!!! </h4>
+                    </div>
+                    <ul>
+                        <li>Escanee el código QR que se encuentra en su mesa</li>
+                        <li>Seleccione del menu lo que quiera ordenar</li>
+                        <li>Presione en enviar para ingresar su pedido</li>
+                        <li>Una vez finalizado, confirme con el personal de la sala que todo esta ok</li>
+                    </ul>
+                    <p>
+                        Sera entregado en su mesa dentro de los 40 minutos desde la confirmacion de la orden.
+                    </p>
+                    ";
+                    pedidos = mensaje;
                 }
             }
-            else
+            catch(Exception ex)
             {
-                string mensaje = 
-                @"<div class='alert alert-danger' role='alert'> 
-                    <h4>Ups!!! </h4>
-                </div>
-                <ul>
-                    <li>Escanee el código QR que se encuentra en su mesa</li>
-                    <li>Seleccione del menu lo que quiera ordenar</li>
-                    <li>Presione en enviar para ingresar su pedido</li>
-                    <li>Una vez finalizado, confirme con el personal de la sala que todo esta ok</li>
-                </ul>
-                <p>
-                    Sera entregado en su mesa dentro de los 40 minutos desde la confirmacion de la orden.
-                </p>
-                ";
-                pedidos = mensaje;
+                    string mensaje = 
+                    @"<div class='alert alert-danger' role='alert'> 
+                        <h4>Error </h4>
+                    </div>
+                    <p>" + ex.Message + "</p>";
+                    
+                    pedidos = mensaje;
             }
         }
 
